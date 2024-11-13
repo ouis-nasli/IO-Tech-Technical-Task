@@ -1,6 +1,7 @@
 import { MdCircle } from 'react-icons/md';
 import { Outlet } from 'react-router-dom';
 import AddNewPostButton from './components/AddNewPostButton';
+import { memo } from 'react';
 
 const PostComponent = () => {
 	return (
@@ -23,4 +24,4 @@ const PostComponent = () => {
 	);
 };
 
-export default PostComponent;
+export default memo(PostComponent);
