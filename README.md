@@ -1,4 +1,5 @@
-(https://io-tech-technical-task.vercel.app).
+## Available Scripts
+https://io-tech-technical-task.vercel.app
 
 # Getting Started with Create React App
 
