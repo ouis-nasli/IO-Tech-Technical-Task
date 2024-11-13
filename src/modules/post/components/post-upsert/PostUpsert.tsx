@@ -1,9 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, memo, useImperativeHandle } from 'react';
 import { useForm, UseFormReset } from 'react-hook-form';
+import Button from 'src/components/shared/button/Button';
 import TextArea from 'src/components/shared/form/TextArea';
 import TextInput from 'src/components/shared/form/TextInput';
-import ProgressLoader from 'src/components/shared/loader/ProgressLoader';
 import { IPost } from 'src/services/posts/interface';
 import * as Yup from 'yup';
 
@@ -70,24 +70,13 @@ const PostUpsert = forwardRef<IPostUpsertForwardRef, IPostUpsertProps>(
 								/>
 							</div>
 							<div className='flex justify-end space-x-4'>
-								<button
-									className='px-4 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-									onClick={onClose}
-									disabled={isLoading}
-									type='button'
-								>
+								<Button variant='text' onClick={onClose} disabled={isLoading}>
 									Cancel
-								</button>
-								<button
-									className={`px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 flex items-center justify-center ${
-										isLoading ? 'opacity-70 cursor-not-allowed' : ''
-									}`}
-									onClick={() => handleSubmit(onSubmit)()}
-									disabled={isLoading}
-									type='submit'
-								>
-									{isLoading ? <ProgressLoader /> : 'Submit'}
-								</button>
+								</Button>
+
+								<Button color='primary' isLoading={isLoading} onClick={() => handleSubmit(onSubmit)()}>
+									Submit
+								</Button>
 							</div>
 						</div>
 					</div>
@@ -101,4 +90,4 @@ const PostUpsert = forwardRef<IPostUpsertForwardRef, IPostUpsertProps>(
 
 PostUpsert.displayName = 'PostUpsert';
 
-export default PostUpsert;
+export default memo(PostUpsert);

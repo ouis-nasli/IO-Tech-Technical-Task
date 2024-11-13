@@ -1,4 +1,4 @@
-import ProgressLoader from '../loader/ProgressLoader';
+import Button from '../button/Button';
 
 interface ConfirmationModalProps {
 	isOpen: boolean;
@@ -27,21 +27,12 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 				<h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4'>Confirm Action</h3>
 				<p className='text-gray-600 dark:text-gray-300 mb-6'>{message}</p>
 				<div className='flex justify-end space-x-4'>
-					<button
-						className='px-4 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-						onClick={onClose}
-					>
+					<Button variant='text' onClick={onClose} disabled={isLoading}>
 						{cancelText}
-					</button>
-					<button
-						className={`px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 flex items-center justify-center ${
-							isLoading ? 'opacity-70 cursor-not-allowed' : ''
-						}`}
-						onClick={onConfirm}
-						disabled={isLoading}
-					>
-						{isLoading ? <ProgressLoader /> : confirmText}
-					</button>
+					</Button>
+					<Button color='error' onClick={onConfirm} isLoading={isLoading}>
+						{confirmText}
+					</Button>
 				</div>
 			</div>
 		</div>
