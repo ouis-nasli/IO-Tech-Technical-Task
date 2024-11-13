@@ -1,78 +1,17 @@
-import { useMemo, useState } from 'react';
 import TableHeader, { ITableCell } from 'src/components/shared/table/TableHeader';
-import useCriteria from 'src/hooks/useCriteria';
-import { useDebounce } from 'src/hooks/useDebounce';
 import TableRow from 'src/modules/post/components/table/TableRow';
-import { useGetAllPostsQuery } from 'src/services/posts/useGetAllPostsQuery';
-import { postStore } from '../store/postStore';
+import usePostIndex from './usePostIndex';
 
 const PostIndex = () => {
-	const { sortKey, sortOrder, setSortOrder, setSortKey } = postStore();
-
-	const [criteria, setCriteria] = useCriteria();
-	const [searchValue, setSearchValue] = useState(criteria.search);
-
-	// Debounced function to update the search criteria
-	const updateSearchCriteria = useDebounce((value: string) => {
-		setCriteria({
-			...criteria,
-			search: value,
-		});
-	}, 500);
-
-	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value;
-		setSearchValue(value);
-		updateSearchCriteria(value);
-	};
-
-	const { data: posts } = useGetAllPostsQuery();
-
-	const handleSortChange = (key: string) => {
-		if (sortKey === key) {
-			// Toggle sort order if the same key is clicked
-			setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-		} else {
-			// Set new sort key and reset order to 'asc'
-			setSortKey(key);
-			setSortOrder('asc');
-		}
-	};
-
-	const filteredAndSortedPosts = useMemo(() => {
-		if (!posts) return [];
-
-		// Filter by search
-		const filtered = searchValue
-			? posts.filter((post) => post.title.toLowerCase().includes(searchValue.toLowerCase()))
-			: posts;
-
-		// Sort by the selected key
-		const sorted = [...filtered].sort((a, b) => {
-			const valueA = a[sortKey as keyof typeof a];
-			const valueB = b[sortKey as keyof typeof b];
-
-			if (typeof valueA === 'string' && typeof valueB === 'string') {
-				return sortOrder === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
-			}
-
-			if (typeof valueA === 'number' && typeof valueB === 'number') {
-				return sortOrder === 'asc' ? valueA - valueB : valueB - valueA;
-			}
-
-			return 0;
-		});
-
-		return sorted;
-	}, [posts, searchValue, sortKey, sortOrder]);
+	const { filteredAndSortedPosts, handleSearchChange, handleSortChange, searchValue } = usePostIndex();
 
 	return (
 		<div className='bg-[#1c252e] w-full  my-6 rounded-2xl pb-3 '>
 			<input
 				className='rounded-t-2xl w-full py-3 px-4 outline-none bg-[#1c252e] border-b-[1px] border-b-slate-500 text-slate-100 '
 				type='text'
-				name=''
-				id=''
+				name='Search'
+				id='search-input'
 				placeholder='Search By Title'
 				value={searchValue}
 				onChange={handleSearchChange}
@@ -80,12 +19,7 @@ const PostIndex = () => {
 
 			<div className='mt-3 overflow-x-scroll'>
 				<table className='w-full'>
-					<TableHeader
-						cells={postsTableHeaderCells}
-						sortKey={sortKey}
-						sortOrder={sortOrder}
-						onSort={handleSortChange}
-					/>
+					<TableHeader cells={postsTableHeaderCells} onSort={handleSortChange} />
 					<tbody>
 						{filteredAndSortedPosts?.map((post, index) => (
 							<TableRow post={post} key={index} />
