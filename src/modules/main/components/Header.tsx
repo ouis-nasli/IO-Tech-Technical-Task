@@ -1,7 +1,7 @@
 const Header = () => {
 	return (
-		<div className='w-full h-16 bg-[rgba(20, 26, 33, 0.8)] flex items-center px-16 backdrop-blur-[6px]'>
-			<img src='/iotech_logo_white.png' alt='' />
+		<div className='sticky top-0 w-full h-16 bg-[#141a21] flex items-center lg:px-16 px-4'>
+			<img src='/iotech_logo_white.png' alt='' width={150} />
 		</div>
 	);
 };

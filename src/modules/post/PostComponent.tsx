@@ -4,7 +4,7 @@ import AddNewPostButton from './components/AddNewPostButton';
 
 const PostComponent = () => {
 	return (
-		<div className='px-24 pt-8 '>
+		<div className='px-3 lg:px-24 pt-8 '>
 			<div className='flex items-center justify-between'>
 				<div>
 					<div>
