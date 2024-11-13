@@ -11,8 +11,6 @@ export interface ITableCell {
 
 interface ITableHeaderProps {
 	cells: ITableCell[];
-	sortKey: string;
-	sortOrder: 'asc' | 'desc';
 	onSort: (key: string) => void;
 }
 
