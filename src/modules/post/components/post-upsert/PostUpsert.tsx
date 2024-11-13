@@ -29,7 +29,7 @@ const PostUpsert = forwardRef<IPostUpsertForwardRef, IPostUpsertProps>(
 		}));
 
 		const validationSchema = Yup.object().shape({
-			name: Yup.string().required().label('Name'),
+			title: Yup.string().required().label('Name'),
 			body: Yup.string().required().label('Description'),
 		});
 
@@ -52,10 +52,10 @@ const PostUpsert = forwardRef<IPostUpsertForwardRef, IPostUpsertProps>(
 									placeholder='Title'
 									required
 									defaultValue={initialValues?.title}
-									{...register('name')}
+									{...register('title')}
 									disabled={isLoading}
-									error={Boolean(errors.name?.message)}
-									errorMessage={(errors.name?.message as any) || ''}
+									error={Boolean(errors.title?.message)}
+									errorMessage={(errors.title?.message as any) || ''}
 									autoFocus
 								/>
 								<TextArea
