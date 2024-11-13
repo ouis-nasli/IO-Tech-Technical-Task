@@ -37,7 +37,215 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be 
+useful if you couldn’t customize it when you are ready for it.
+
+# Project Structure
+
+### Modules Folders :
+
+```
+- userManagement
+  - users
+  - groups
+```
+
+-   userManagement is a module
+-   users and groups are submodules
+-   module nameing format is camelCase
+
+# Component as Module
+
+In our project structure, we use a concept called "Component as Module". This pattern is used when a component has its own files and components. Here's how to apply it:
+
+-   Put the component file in a folder. This folder now acts as a module.
+-   Place all files related to this component in that folder.
+-   Use files in this folder only within this component and its nested files.
+-   Never use it outside of this folder or component.
+-   All file and folder naming should follow the camelCase format, except for Component files and their folders.
+
+For example:
+
+Profile Component
+
+```
+- Profile
+  - Profile.tsx
+  - context
+  - dummyData.ts
+  - style.ts
+  - helpers
+      getSum.tsx
+  - hooks
+      useHash.tsx
+```
+
+If the component is large, you can break it down into multiple components:
+
+-   These are called "local components" and should be placed in the components folder.
+
+```
+- Profile
+  - Profile.tsx
+      - components
+          ProfileAvatar.tsx
+          ProfileImagePicker.tsx
+          ProfileFooter.tsx
+  - context
+  - dummyData.ts
+  - style.ts
+  - helpers
+      getSum.tsx
+  - hooks
+```
+
+This concept can be applied to any component, including Modules, Pages, Components, and Sub Components.
+
+
+# Upsert 
+
+Upsert = Update + Insert 
+Upsert is not a component , it's just a concept you can apply in a component 
+And here an example for that 
+
+note : don't copy and paste ,this code is dummy 
+
+## New
+
+For Example
+
+
+```tsx
+import UpsertRecord from './components/UpsertRecord/UpsertRecord';
+const RecordByIdNew: React.FC = () => {
+
+	return (
+		<>
+				<UpsertRecord></UpsertRecord>
+		</>
+	);
+};
+
+```
+## Edit 
+
+For Example
+```tsx
+const RecordsByIdEdit: React.FC = () => {
+	const { id } = useParams();
+
+	/**
+	 * "id as string"
+	 *  this page component is '/:id'
+	 *  so id will never be undefined
+	 */
+	const { data, isLoading } = useEquipmentByIdQuery(id as string);
+	/** 
+	 * create mapping function to map item by id interface to mution interface 
+	 * 
+	 */
+	const initialValues = useMemo(() => (data != undefined ? convertRecordItemToMutation(data?.data) : undefined), [data]);
+
+	return (
+		<>
+				{
+				/**
+					* just don't render Form In Upsert until loading finish and initialValues are ready 
+					* ust loading example , use better than this loader
+					*/
+				}
+				{isLoading ? (
+					<>
+						<Button>loading</Button> 
+					</>
+				) : (
+					<UpsertRecord
+						id={id}
+						isEdit={true}
+						initialValues={initialValues}
+					></UpsertRecord>
+				)}
+		</>
+	);
+};
+
+export default EquipmentsByIdEdit;
+
+
+```
+
+## Upsert
+
+```tsx
+interface UpsertRecordProps {
+	initialValues?: IRecord;
+}
+
+const UpsertRecord: FC<UpsertRecordProps> = ({ initialValues , isEdit, id }) => {
+	const { mutate, isLoading } = useRecordUpsertMutation(id, {
+		onError(error) {
+		},
+		onSuccess() {
+		},
+	});
+
+	return (
+			<>
+				<Form
+					onFinish={mutate}
+					initialValues={initialValues}
+				>
+				</Form>
+			</>
+	);
+};
+
+export default UpsertRecord;
+
+```
+
+### convertRecordItemToMutation
+also this consept when GetRecordByID example Query return record in deferent interface when create it
+
+for example 
+
+
+```ts
+interface IMutationRecord {
+	name: string
+	parent: string
+	
+}
+
+interface IRecordItem {
+	id : string
+	name: string
+	parent: {
+		id : string
+		name : string
+	}
+}
+```
+as you can see parent in IMutationRecord is string , but in IRecordItem is object 
+so here you can map IMutationRecord to IRecordItem by implement function like this and use it in Edit Page before pass it to Upsert component component
+
+```ts
+export function convertRecordItemToMutation(item: IRecordItem): IMutationRecord {
+	const {
+		name,
+		parent
+	} = equipmentItem;
+
+	return {
+		name,
+		parent: parent?.id,
+	};
+}
+
+```
+
+
+
 
 ## Learn More
 
