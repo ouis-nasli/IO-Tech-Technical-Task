@@ -7,7 +7,7 @@ import { useGetAllPostsQuery } from 'src/services/posts/useGetAllPostsQuery';
 import { postStore } from '../store/postStore';
 
 const PostIndex = () => {
-	const { search, sortKey, sortOrder, setSortOrder, setSortKey } = postStore();
+	const { sortKey, sortOrder, setSortOrder, setSortKey } = postStore();
 
 	const [criteria, setCriteria] = useCriteria();
 	const [searchValue, setSearchValue] = useState(criteria.search);
@@ -43,7 +43,9 @@ const PostIndex = () => {
 		if (!posts) return [];
 
 		// Filter by search
-		const filtered = search ? posts.filter((post) => post.title.toLowerCase().includes(search.toLowerCase())) : posts;
+		const filtered = searchValue
+			? posts.filter((post) => post.title.toLowerCase().includes(searchValue.toLowerCase()))
+			: posts;
 
 		// Sort by the selected key
 		const sorted = [...filtered].sort((a, b) => {
@@ -62,7 +64,7 @@ const PostIndex = () => {
 		});
 
 		return sorted;
-	}, [posts, search, sortKey, sortOrder]);
+	}, [posts, searchValue, sortKey, sortOrder]);
 
 	return (
 		<div className='bg-[#1c252e] w-full  my-6 rounded-2xl pb-3 '>
