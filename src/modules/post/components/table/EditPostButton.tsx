@@ -4,7 +4,7 @@ import { IPost, IUpsertPostMutation } from 'src/services/posts/interface';
 import useUpsertPostMutation from 'src/services/posts/useUpsertPostMutation';
 import PostUpsert from '../post-upsert/PostUpsert';
 import { toast } from 'react-toastify';
-import queryClient from 'src/queryClient';
+import IconButton from 'src/components/shared/button/IconButton';
 
 interface IEditPostButtonProps {
 	post: IPost;
@@ -21,18 +21,9 @@ const EditPostButton: FC<IEditPostButtonProps> = ({ post }) => {
 	const handleOpen = () => setIsOpen(true);
 
 	const { mutate, isLoading } = useUpsertPostMutation(post.id, {
-		onSuccess(_data, _variables, _context) {
+		onSuccess() {
 			handleClose();
 			toast.success('Post updated successfully.');
-		},
-		onMutate: async (updatedPost) => {
-			await queryClient.cancelQueries({ queryKey: ['posts'] });
-			const previousPosts = queryClient.getQueryData(['posts']);
-			queryClient.setQueryData(['posts'], (old: IPost[]) => [
-				...old.map((oldPost) => (oldPost.id !== post.id ? oldPost : { ...oldPost, ...updatedPost })),
-			]);
-
-			return { previousPosts };
 		},
 		onError() {
 			toast.error('Error updating post.');
@@ -43,9 +34,9 @@ const EditPostButton: FC<IEditPostButtonProps> = ({ post }) => {
 
 	return (
 		<>
-			<div className='p-2 hover:bg-[#212c37] rounded-full cursor-pointer transition' onClick={handleOpen}>
+			<IconButton onClick={handleOpen}>
 				<AiOutlineEdit size={22} />
-			</div>
+			</IconButton>
 			<PostUpsert
 				ref={postUpsertRef}
 				isOpen={isOpen}
