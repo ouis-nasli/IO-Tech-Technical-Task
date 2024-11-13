@@ -42,7 +42,9 @@ const PostUpsert = forwardRef<IPostUpsertForwardRef, IPostUpsertProps>(
 				{isOpen ? (
 					<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
 						<div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md'>
-							<h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4'>Add new post</h3>
+							<h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4'>
+								{initialValues?.id ? 'Edit post' : 'Add new post'}
+							</h3>
 							<div className='mb-4'>
 								<TextInput
 									type='text'

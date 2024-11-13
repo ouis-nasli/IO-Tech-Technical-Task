@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { IPost } from 'src/services/posts/interface';
-import { AiOutlineEdit } from 'react-icons/ai';
 import DeletePostButton from './DeletePostButton';
+import EditPostButton from './EditPostButton';
 
 interface ITableRowProps {
 	post: IPost;
@@ -16,9 +16,7 @@ const TableRow: FC<ITableRowProps> = ({ post }) => {
 			<td className='px-4 py-3'>{body}</td>
 			<td className='' width={100}>
 				<div className='flex'>
-					<div className='p-2 hover:bg-[#212c37] rounded-full cursor-pointer transition'>
-						<AiOutlineEdit size={22} />
-					</div>
+					<EditPostButton post={post} />
 					<DeletePostButton id={id} />
 				</div>
 			</td>
@@ -26,4 +24,4 @@ const TableRow: FC<ITableRowProps> = ({ post }) => {
 	);
 };
 
-export default TableRow;
+export default memo(TableRow);

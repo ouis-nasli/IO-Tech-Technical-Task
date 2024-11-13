@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 
 import PostUpsert from './post-upsert/PostUpsert';
 import useUpsertPostMutation from 'src/services/posts/useUpsertPostMutation';
 import { IUpsertPostMutation } from 'src/services/posts/interface';
+import { toast } from 'react-toastify';
 
 const AddNewPostButton = () => {
 	const postUpsertRef = useRef(null);
@@ -17,6 +18,10 @@ const AddNewPostButton = () => {
 	const { mutate, isLoading } = useUpsertPostMutation(null, {
 		onSuccess(_data, _variables, _context) {
 			handleClose();
+			toast.success('Post created successfully.');
+		},
+		onError() {
+			toast.error('Error creating post.');
 		},
 	});
 
@@ -43,4 +48,4 @@ const AddNewPostButton = () => {
 	);
 };
 
-export default AddNewPostButton;
+export default memo(AddNewPostButton);

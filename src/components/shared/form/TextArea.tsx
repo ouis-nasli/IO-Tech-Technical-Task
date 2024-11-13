@@ -19,7 +19,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, ITextAreaProps>(
 			required = false,
 			placeholder = '',
 			disabled = false,
-			rows = 4,
+			rows = 6,
 			...rest
 		},
 		ref
