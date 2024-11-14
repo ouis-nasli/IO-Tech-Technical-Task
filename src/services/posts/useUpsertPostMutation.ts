@@ -3,20 +3,16 @@ import { HttpError } from 'src/interfaces/common';
 import { _axios } from '../httpConfig';
 import { IPost, IUpsertPostMutation } from './interface';
 import queryClient from 'src/queryClient';
-import { toast } from 'react-toastify';
 
 export function useUpsertPostMutation(
 	id?: number | null,
 	options?: UseMutationOptions<boolean, HttpError, IUpsertPostMutation>
 ) {
 	return useMutation((params) => (id ? updateFunc(id, params) : createFunc(params)), {
-		...options,
 		onMutate: async (updatedPost) => {
 			id ? updateMutation(updatedPost, id) : createMutation(updatedPost);
 		},
-		onError() {
-			toast.error('Error updating post.');
-		},
+		...options,
 	});
 }
 

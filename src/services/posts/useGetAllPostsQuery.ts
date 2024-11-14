@@ -3,7 +3,6 @@ import { _axios } from '../httpConfig';
 import { IPost } from './interface';
 import { HttpError } from 'src/interfaces/common';
 import queryClient from 'src/queryClient';
-// import { objToSearchParamsString } from 'src/helpers/objToSearchParamsString';
 import { FilterCriteriaType } from 'src/hooks/useCriteria';
 
 const postsKey = 'posts';

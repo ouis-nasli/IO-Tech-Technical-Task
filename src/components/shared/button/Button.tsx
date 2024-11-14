@@ -56,4 +56,29 @@ const Button: React.FC<ButtonProps> = ({
 	);
 };
 
+/**
+ * A reusable button component with multiple variants, colors, and sizes.
+ * Supports loading state and uses a `ProgressLoader` when `isLoading` is true.
+ * This component is memoized for performance optimization.
+ *
+ * @component
+ * @example
+ * // Example usage with default props:
+ * <Button>Click Me</Button>
+ *
+ * @example
+ * // Example usage with a primary variant:
+ * <Button variant="contained" color="primary" size="large">Submit</Button>
+ *
+ * @example
+ * // Example usage with outlined variant and error color:
+ * <Button variant="outlined" color="error" isLoading>Loading...</Button>
+ *
+ * @returns {JSX.Element} The rendered button component.
+ *
+ * @example
+ * // Example usage with additional attributes:
+ * <Button onClick={handleClick} disabled={isDisabled}>Save</Button>
+ */
+
 export default memo(Button);
